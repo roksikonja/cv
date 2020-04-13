@@ -3,8 +3,12 @@ import cv2
 cv2.namedWindow("preview")
 vc = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
-face_cascade = cv2.CascadeClassifier('./venv/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('./venv/Lib/site-packages/cv2/data/haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier(
+    "./venv/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml"
+)
+eye_cascade = cv2.CascadeClassifier(
+    "./venv/Lib/site-packages/cv2/data/haarcascade_eye.xml"
+)
 
 frame = None
 if vc.isOpened():  # try to get the first frame
@@ -18,8 +22,8 @@ while rval:
 
     for (x, y, w, h) in faces:
         frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        roi_gray = gray[y:y + h, x:x + w]
-        roi_color = frame[y:y + h, x:x + w]
+        roi_gray = gray[y : y + h, x : x + w]
+        roi_color = frame[y : y + h, x : x + w]
 
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex, ey, ew, eh) in eyes:
