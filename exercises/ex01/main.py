@@ -5,8 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io
 
-from exercises.toolbox import to_homogeneous_coordinates, run_dlt, project_xyz, construct_P_matrix, make_grid, \
-    mean_reprojection_error, run_gold_standard
+from exercises.toolbox import (
+    to_homogeneous_coordinates,
+    run_dlt,
+    project_xyz,
+    construct_P_matrix,
+    make_grid,
+    mean_reprojection_error,
+    run_gold_standard,
+)
 from exercises.visualizer import draw_markers, print_matrix
 
 data_dir = "./data"
@@ -48,7 +55,9 @@ print_matrix(C, "C")
 print_matrix(P @ C, "P * C")
 
 xy_p = project_xyz(construct_P_matrix(K, R, t), XYZ)
-img_mp = draw_markers(img_m, xy_p[:-1, :], color=(255, 0, 0), marker_type=cv2.MARKER_TILTED_CROSS)
+img_mp = draw_markers(
+    img_m, xy_p[:-1, :], color=(255, 0, 0), marker_type=cv2.MARKER_TILTED_CROSS
+)
 
 # Grid
 X_max = 7
@@ -58,17 +67,23 @@ Z_max = 9
 XYZ_grid = make_grid(X_max, Y_max, Z_max)
 xy_grid = project_xyz(construct_P_matrix(K, R, t), XYZ_grid)
 
-img_grid = draw_markers(img, xy_grid[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS)
+img_grid = draw_markers(
+    img, xy_grid[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS
+)
 
 """
     Gold Standard Algorithm.
 """
-img_gs = draw_markers(img, xy_gs[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS)
+img_gs = draw_markers(
+    img, xy_gs[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS
+)
 
 error = mean_reprojection_error(np.hstack((xy, xy_gs)), np.hstack((XYZ, XYZ_gs)), P)
 print(f"reprojection error {error}")
 
-P_gs, K_gs, R_gs, t_gs, C_gs, error_gs = run_gold_standard(np.hstack((xy, xy_gs)), np.hstack((XYZ, XYZ_gs)))
+P_gs, K_gs, R_gs, t_gs, C_gs, error_gs = run_gold_standard(
+    np.hstack((xy, xy_gs)), np.hstack((XYZ, XYZ_gs))
+)
 print(f"reprojection error {error_gs}")
 
 print_matrix(P_gs, "P_gs")
@@ -78,7 +93,9 @@ print_matrix(t_gs, "t_gs")
 print_matrix(C_gs, "C_gs")
 
 xy_grid_gs = project_xyz(construct_P_matrix(K_gs, R_gs, t_gs), XYZ_grid)
-img_grid_gs = draw_markers(img, xy_grid_gs[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS)
+img_grid_gs = draw_markers(
+    img, xy_grid_gs[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS
+)
 
 """"
     Camera intrinsic parameters.
@@ -91,7 +108,7 @@ f_py = K[1, 1]
 
 px_py = f_py / f_px
 
-alpha = np.arctan(K[0, 1] / f_py) * 180/(2 * np.pi)
+alpha = np.arctan(K[0, 1] / f_py) * 180 / (2 * np.pi)
 
 print(f"c_x {c_x} c_y {c_y} f_px {f_px} f_py {f_py} alpha {alpha} px_py {px_py}")
 

@@ -36,15 +36,17 @@ def normalization(xy, xyz):
     xyz_scale = np.sum(np.sqrt(np.sum(np.square(xyz_n[:-1, :]), axis=0)))
     xyz_scale = n * np.sqrt(3) / xyz_scale
 
-    T = np.array([[1, 0, -xy_centroid[0]],
-                  [0, 1, -xy_centroid[1]],
-                  [0, 0, 1]])
+    T = np.array([[1, 0, -xy_centroid[0]], [0, 1, -xy_centroid[1]], [0, 0, 1]])
     T[:-1, :] = xy_scale * T[:-1, :]
 
-    U = np.array([[1, 0, 0, -xyz_centroid[0]],
-                  [0, 1, 0, -xyz_centroid[1]],
-                  [0, 0, 1, -xyz_centroid[2]],
-                  [0, 0, 0, 1]])
+    U = np.array(
+        [
+            [1, 0, 0, -xyz_centroid[0]],
+            [0, 1, 0, -xyz_centroid[1]],
+            [0, 0, 1, -xyz_centroid[2]],
+            [0, 0, 0, 1],
+        ]
+    )
     U[:-1, :] = xyz_scale * U[:-1, :]
 
     xy_n = T @ xy
@@ -78,7 +80,7 @@ def dlt(xy, xyz):
         x = xy[:, i]
 
         for j in range(3):
-            M[i * 3 + j, (j * 4):((j + 1) * 4)] = X
+            M[i * 3 + j, (j * 4) : ((j + 1) * 4)] = X
             M[i * 3 + j, 12 + i] = x[j]
 
     _, _, V = np.linalg.svd(M)
@@ -159,8 +161,14 @@ def run_gold_standard(xy, xyz, max_iter=500):
     Pn = dlt(xy_n, xyz_n)
 
     pn = Pn.flatten()
-    result = scipy.optimize.fmin(func=fmin_gold_standard, args=(xy_n, xyz_n), x0=pn, maxiter=max_iter, maxfun=100000,
-                                 disp=True)
+    result = scipy.optimize.fmin(
+        func=fmin_gold_standard,
+        args=(xy_n, xyz_n),
+        x0=pn,
+        maxiter=max_iter,
+        maxfun=100000,
+        disp=True,
+    )
 
     pn = result
     Pn = np.reshape(pn, (3, 4))

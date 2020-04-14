@@ -30,7 +30,14 @@ def print_matrix(matrix, name=None):
     print("\n")
 
 
-def draw_markers(img, xy, color=(0, 0, 255), marker_type=cv2.MARKER_CROSS, marker_size=50, marker_thickness=4):
+def draw_markers(
+    img,
+    xy,
+    color=(0, 0, 255),
+    marker_type=cv2.MARKER_CROSS,
+    marker_size=50,
+    marker_thickness=4,
+):
     img_markers = img.copy()
 
     for marker in matrix_to_tuple_list(xy.astype(int)):
