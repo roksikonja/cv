@@ -12,7 +12,7 @@ fps = 120
 while True:
     response = urlopen(url)
     img_array: np.ndarray = np.array(bytearray(response.read()), dtype=np.uint8)
-    img: np.ndarray  = cv2.imdecode(img_array, -1)
+    img: np.ndarray = cv2.imdecode(img_array, -1)
 
     cv2.imshow("ipcamera", img)
 
