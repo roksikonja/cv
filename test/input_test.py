@@ -1,7 +1,7 @@
-import cv2
+import cv2 as cv
 
-cv2.namedWindow("preview")
-vc = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cv.namedWindow("preview")
+vc = cv.VideoCapture(0, cv.CAP_DSHOW)
 
 frame = None
 if vc.isOpened():  # try to get the first frame
@@ -10,13 +10,13 @@ else:
     rval = False
 
 while rval:
-    cv2.imshow("preview", frame)
+    cv.imshow("preview", frame)
     rval, frame = vc.read()
 
-    key = cv2.waitKey(20)
+    key = cv.waitKey(20)
     if key == 27 or key == ord("q"):  # exit on ESC
         break
 
 vc.release()
-cv2.destroyWindow("preview")
-cv2.destroyAllWindows()
+cv.destroyWindow("preview")
+cv.destroyAllWindows()

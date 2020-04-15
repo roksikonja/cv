@@ -1,4 +1,4 @@
-import cv2
+import cv2 as cv
 import numpy as np
 
 
@@ -12,9 +12,17 @@ def matrix_to_tuple_list(matrix):
 
 
 def print_matrix(matrix, name=None):
+
     if name:
-        print(name, "=")
+        if type(matrix) == np.ndarray:
+            shape = matrix.shape
+        else:
+            shape = len(matrix)
+
+        print(name, "=", str(shape), str(type(matrix)))
+
     lines = []
+    matrix = np.squeeze(matrix)
     matrix = np.atleast_2d(matrix)
 
     for row in matrix:
@@ -34,14 +42,14 @@ def draw_markers(
     img,
     xy,
     color=(0, 0, 255),
-    marker_type=cv2.MARKER_CROSS,
+    marker_type=cv.MARKER_CROSS,
     marker_size=50,
     marker_thickness=4,
 ):
     img_markers = img.copy()
 
     for marker in matrix_to_tuple_list(xy.astype(int)):
-        img_markers = cv2.drawMarker(
+        img_markers = cv.drawMarker(
             img_markers,
             marker,
             color=color,

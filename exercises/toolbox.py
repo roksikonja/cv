@@ -1,8 +1,6 @@
 import numpy as np
 import scipy.optimize
 
-from exercises.visualizer import print_matrix
-
 
 def to_homogeneous_coordinates(matrix):
     hmatrix = np.ones(shape=(matrix.shape[0] + 1, matrix.shape[1]))
@@ -80,7 +78,7 @@ def dlt(xy, xyz):
         x = xy[:, i]
 
         for j in range(3):
-            M[i * 3 + j, (j * 4) : ((j + 1) * 4)] = X
+            M[i * 3 + j, (j * 4): ((j + 1) * 4)] = X
             M[i * 3 + j, 12 + i] = x[j]
 
     _, _, V = np.linalg.svd(M)
@@ -135,7 +133,7 @@ def construct_P_matrix(K, R, t):
 
 
 def make_grid(x_max, y_max, z_max):
-    xyz_grid = np.zeros((3, (z_max + 1) * (x_max + y_max + 1)))
+    xyz_grid = np.zeros((3, (z_max + 1) * (x_max + y_max + 1) + (x_max * y_max)))
 
     i = 0
     for z in range(z_max + 1):
@@ -145,6 +143,11 @@ def make_grid(x_max, y_max, z_max):
 
         for y in range(1, y_max + 1):
             xyz_grid[:, i] = np.array([0, y, z])
+            i = i + 1
+
+    for x in range(1, x_max + 1):
+        for y in range(1, y_max + 1):
+            xyz_grid[:, i] = np.array([x, y, 0])
             i = i + 1
 
     return to_homogeneous_coordinates(xyz_grid)

@@ -1,6 +1,6 @@
 import os
 
-import cv2
+import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io
@@ -19,12 +19,14 @@ from exercises.visualizer import draw_markers, print_matrix
 data_dir = "./data"
 results_dir = "./results"
 
+image_name = "calibration_image.jpg"
+
 """
     Load data.
     Convert to homogeneous coordinates.
 """
-img = cv2.imread(os.path.join(data_dir, "calibration_image.jpg"))
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+img = cv.imread(os.path.join(data_dir, image_name))
+img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 m, n, _ = img.shape
 data = scipy.io.loadmat(os.path.join(data_dir, "points_acc.mat"))
 xy = data["xy"]
@@ -56,7 +58,7 @@ print_matrix(P @ C, "P * C")
 
 xy_p = project_xyz(construct_P_matrix(K, R, t), XYZ)
 img_mp = draw_markers(
-    img_m, xy_p[:-1, :], color=(255, 0, 0), marker_type=cv2.MARKER_TILTED_CROSS
+    img_m, xy_p[:-1, :], color=(255, 0, 0), marker_type=cv.MARKER_TILTED_CROSS
 )
 
 # Grid
@@ -68,14 +70,14 @@ XYZ_grid = make_grid(X_max, Y_max, Z_max)
 xy_grid = project_xyz(construct_P_matrix(K, R, t), XYZ_grid)
 
 img_grid = draw_markers(
-    img, xy_grid[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS
+    img, xy_grid[:-1, :], color=(0, 255, 0), marker_type=cv.MARKER_CROSS
 )
 
 """
     Gold Standard Algorithm.
 """
 img_gs = draw_markers(
-    img, xy_gs[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS
+    img, xy_gs[:-1, :], color=(0, 255, 0), marker_type=cv.MARKER_CROSS
 )
 
 error = mean_reprojection_error(np.hstack((xy, xy_gs)), np.hstack((XYZ, XYZ_gs)), P)
@@ -94,7 +96,7 @@ print_matrix(C_gs, "C_gs")
 
 xy_grid_gs = project_xyz(construct_P_matrix(K_gs, R_gs, t_gs), XYZ_grid)
 img_grid_gs = draw_markers(
-    img, xy_grid_gs[:-1, :], color=(0, 255, 0), marker_type=cv2.MARKER_CROSS
+    img, xy_grid_gs[:-1, :], color=(0, 255, 0), marker_type=cv.MARKER_CROSS
 )
 
 """"
