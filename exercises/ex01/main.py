@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io
 
-from exercises.toolbox import (
+from toolbox.calibration import (
     to_homogeneous_coordinates,
     run_dlt,
     project_xyz,
@@ -14,7 +14,7 @@ from exercises.toolbox import (
     mean_reprojection_error,
     run_gold_standard,
 )
-from exercises.visualizer import draw_markers, print_matrix
+from toolbox.visualizer import draw_markers, print_matrix
 
 data_dir = "./data"
 results_dir = "./results"

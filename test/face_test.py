@@ -1,13 +1,13 @@
 import cv2 as cv
 
 face_cascade = cv.CascadeClassifier(
-    "./venv/Lib/site-packages/cv/data/haarcascade_frontalface_default.xml"
+    "../venv/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml"
 )
 eye_cascade = cv.CascadeClassifier(
-    "./venv/Lib/site-packages/cv/data/haarcascade_eye.xml"
+    "../venv/Lib/site-packages/cv2/data/haarcascade_eye.xml"
 )
 
-img = cv.imread("./data/face_plain.jpg")
+img = cv.imread("../data/test/face_plain.jpg")
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
 faces = face_cascade.detectMultiScale(gray, 1.3, 5)
