@@ -63,6 +63,12 @@ class ArucoMarkers(object):
             },
         ]
 
+        self.search_by_id = dict()
+        for plane in ["xy", "yz", "zx"]:
+            markers = self.markers[plane]
+            for i, marker in enumerate(markers):
+                self.search_by_id[marker["id"]] = (plane, i)
+
     def create_marker(
         self, marker_id, h_cm, v_cm, marker_pi, dpcm, marker_border=1, verbose=True,
     ):
@@ -94,6 +100,7 @@ class ArucoMarkers(object):
         frame,
         corners,
         ids,
+        only_top_left=False,
         marker_color=(0, 255, 0),
         marker_size=10,
         marker_type=cv.MARKER_CROSS,
@@ -103,6 +110,10 @@ class ArucoMarkers(object):
         if ids.any():
             for i, c in enumerate(corners):
                 c = np.squeeze(c)
+
+                if only_top_left:
+                    c = c[:1, :]
+
                 frame = draw_markers(
                     frame,
                     c.T,
@@ -121,3 +132,22 @@ class ArucoMarkers(object):
                     thickness=2,
                 )
         return frame
+
+    def get_position_by_id(self, id_):
+        plane, i = self.search_by_id[id_]
+        marker = self.markers[plane][i]
+
+        marker_XYZ = np.array(
+            [marker["X_cm"], marker["Y_cm"], marker["Z_cm"]], dtype=np.float
+        )
+        return marker_XYZ
+
+    def get_positions_by_id(self, corners, ids):
+        xy = np.zeros((2, len(ids)))
+        XYZ = np.zeros((3, len(ids)))
+
+        for i in range(len(ids)):
+            xy[:, i] = corners[i][0, 0, :]
+            XYZ[:, i] = self.get_position_by_id(ids[i][0])
+
+        return xy, XYZ

@@ -19,3 +19,9 @@
 
 
 https://github.com/opencv/opencv
+
+### Aruco Markers
+
+- [Detection](https://docs.opencv.org/trunk/d5/dae/tutorial_aruco_detection.html)
+- [Calibration](https://mecaruco2.readthedocs.io/en/latest/notebooks_rst/Aruco/sandbox/ludovic/aruco_calibration_rotation.html)
+- [Calibration](https://mecaruco2.readthedocs.io/en/latest/notebooks_rst/Aruco/Projet+calibration-Paul.html)
